@@ -3,9 +3,12 @@ import Carousel, { type CarouselImage } from "@/components/Carousel";
 import OrderCta from "@/components/OrderCta";
 import PhotoSection from "@/components/PhotoSection";
 import SectionIntro from "@/components/SectionIntro";
-import { akceItems } from "@/data/akce";
 import { nabidkaCategories } from "@/data/nabidka";
 import { ORDER_MAILTO } from "@/data/site";
+import { getAkceItems } from "@/sanity/client";
+
+// Pick up changes made in the Sanity Studio (keep in sync with SANITY_REVALIDATE).
+export const revalidate = 60;
 
 const features = [
   {
@@ -51,7 +54,9 @@ const certificates: CarouselImage[] = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const akceItems = await getAkceItems();
+
   return (
     <>
       <PhotoSection
@@ -106,16 +111,18 @@ export default function HomePage() {
             Objevte naše jedinečné akce! Pravidelně pro vás připravujeme výhodné
             nabídky na vybrané druhy masa a uzenin.
           </SectionIntro>
-          <table className="akce-table">
-            <tbody>
-              {akceItems.map((item) => (
-                <tr key={item.name}>
-                  <td>{item.name}</td>
-                  <td>{item.price}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {akceItems.length > 0 && (
+            <table className="akce-table">
+              <tbody>
+                {akceItems.map((item, index) => (
+                  <tr key={index}>
+                    <td>{item.name}</td>
+                    <td>{item.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </section>
 
