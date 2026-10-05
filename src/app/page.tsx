@@ -129,7 +129,7 @@ export default function HomePage() {
                 align="left"
               >
                 Rozvážíme <strong>čerstvé maso a masné výrobky</strong> každý
-                všední den (i v sobotu) po celém území Prahy a okolí (do 10 km).
+                pracovní den i v sobotu po celém území Prahy a okolí (do 10 km).
                 Zásobujeme hotely, restaurace, jídelny, školy, školky, výrobny,
                 cateringy a další.{" "}
                 <strong>
