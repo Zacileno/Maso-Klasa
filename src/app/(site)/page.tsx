@@ -3,31 +3,41 @@ import Carousel, { type CarouselImage } from "@/components/Carousel";
 import OrderCta from "@/components/OrderCta";
 import PhotoSection from "@/components/PhotoSection";
 import SectionIntro from "@/components/SectionIntro";
+import type { Metadata } from "next";
+import JsonLd, { homeJsonLd } from "@/components/JsonLd";
 import { nabidkaCategories } from "@/data/nabidka";
+import { pageMetadata } from "@/data/seo";
 import { ORDER_MAILTO } from "@/data/site";
 import { getAkceItems } from "@/sanity/client";
 
 // Pick up changes made in the Sanity Studio (keep in sync with SANITY_REVALIDATE).
 export const revalidate = 60;
 
+export const metadata: Metadata = pageMetadata({
+  title: "Čerstvé maso pro restaurace a školy v Praze – Maso Klasa",
+  description:
+    "Dodáváme čerstvé maso a uzeniny restauracím, školám a hotelům po Praze a okolí už od roku 1997. Objednávky do 9:00 dovezeme ještě týž den, i v sobotu.",
+  path: "/",
+});
+
 const features = [
   {
-    icon: "/images/Untitled-design-6.svg",
+    icon: "/images/ikona-cerstve-maso.svg",
     title: "Čerstvé a kvalitní maso",
     text: "U nás máte jistotu, že získáte vždy čerstvé a vysoce kvalitní maso. Informace o původu rádi poskytneme na vyžádání.",
   },
   {
-    icon: "/images/5.svg",
+    icon: "/images/ikona-rychle-dodani.svg",
     title: "Rychlost dodání",
     text: "Objednejte do 9 hodin a vaše maso doručíme ještě tentýž den. Rychlost a spolehlivost jsou naší prioritou.",
   },
   {
-    icon: "/images/4.svg",
+    icon: "/images/ikona-spolehlivost.svg",
     title: "Spolehlivost",
     text: "Potřebujete maso dovézt přesně na určitou hodinu? Žádný problém. Přizpůsobíme se vašim požadavkům a doručíme přesně, kdy potřebujete.",
   },
   {
-    icon: "/images/6.svg",
+    icon: "/images/ikona-historie.svg",
     title: "Firma s historií",
     text: "Na trhu působíme již od roku 1997. Našim službám dlouhodobě důvěřují největší pražské hotelové řetězce, základní školy a další podniky.",
   },
@@ -35,19 +45,19 @@ const features = [
 
 const certificates: CarouselImage[] = [
   {
-    src: "/images/dokumenty-MASO-pdf-2.jpg",
+    src: "/images/certifikat-maso-klasa-3.jpg",
     width: 722,
     height: 1024,
     alt: "Certifikát Maso Klasa – strana 3",
   },
   {
-    src: "/images/dokumenty-MASO-pdf-1.jpg",
+    src: "/images/certifikat-maso-klasa-2.jpg",
     width: 724,
     height: 1024,
     alt: "Certifikát Maso Klasa – strana 2",
   },
   {
-    src: "/images/dokumenty-MASO-pdf.jpg",
+    src: "/images/certifikat-maso-klasa-1.jpg",
     width: 726,
     height: 1024,
     alt: "Certifikát Maso Klasa – strana 1",
@@ -59,8 +69,9 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={homeJsonLd()} />
       <PhotoSection
-        image="/images/pexels-photo-65175.jpeg"
+        image="/images/syrove-hovezi-s-rozmarynem.jpg"
         className="hero hero--full"
         priority
       >
@@ -156,15 +167,15 @@ export default async function HomePage() {
             <div className="offer__photos">
               <div className="offer__photo-main">
                 <Image
-                  src="/images/pexels-photo-8792899.jpeg"
-                  alt="Čerstvé maso"
+                  src="/images/krajeni-masa-nozem.jpg"
+                  alt="Řezník krájí čerstvé maso"
                   fill
                   sizes="(max-width: 767px) 100vw, 30vw"
                 />
               </div>
               <Image
-                src="/images/pexels-photo-8477071.jpeg"
-                alt="Detail syrového masa"
+                src="/images/hovezi-steaky-detail.jpg"
+                alt="Detail syrových hovězích steaků"
                 width={267}
                 height={510}
                 className="offer__photo-side"
@@ -230,7 +241,7 @@ export default async function HomePage() {
       </section>
 
       <OrderCta
-        image="/images/pexels-photo-8477071.jpeg"
+        image="/images/hovezi-steaky-detail.jpg"
         position="50% 52%"
         text="Zajistěte si každodenní přísun čerstvého masa od profesionálů."
       />

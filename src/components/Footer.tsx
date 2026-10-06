@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { Fragment } from "react";
 import {
   ORDER_EMAIL,
   ORDER_MAILTO,
   company,
+  navItems,
   salesDirector,
   salesReps,
   telHref,
@@ -92,6 +94,14 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
+        <nav className="footer-nav" aria-label="Odkazy v patičce">
+          <Link href="/">Domů</Link>
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
         <p>Autorská práva © {year}</p>
       </div>
     </footer>

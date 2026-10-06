@@ -4,11 +4,16 @@ import OrderCta from "@/components/OrderCta";
 import PhotoSection from "@/components/PhotoSection";
 import SectionIntro from "@/components/SectionIntro";
 import { PhoneIcon } from "@/components/icons";
+import JsonLd, { breadcrumbJsonLd } from "@/components/JsonLd";
+import { pageMetadata } from "@/data/seo";
 import { type Person, salesDirector, salesReps, telHref } from "@/data/site";
 
-export const metadata: Metadata = {
-  title: "Kontakt",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Kontakt a objednávky čerstvého masa, Praha 9 – Maso Klasa",
+  description:
+    "Objednávky čerstvého masa na tel. +420 603 251 519 nebo e-mailem. Noví zákazníci volejte obchodnímu řediteli. Provoz Lovosická 778/2, Praha 9, od roku 1997.",
+  path: "/kontakt",
+});
 
 function PersonContact({ person }: { person: Person }) {
   return (
@@ -27,8 +32,9 @@ function PersonContact({ person }: { person: Person }) {
 export default function KontaktPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd("Kontakt", "/kontakt")} />
       <PhotoSection
-        image="/images/pexels-photo-4015401.jpeg"
+        image="/images/hovezi-steak-na-taliri.jpg"
         className="hero hero--sub"
         priority
       >
@@ -47,8 +53,8 @@ export default function KontaktPage() {
           <div className="contact">
             <div className="contact__photo">
               <Image
-                src="/images/pexels-photo-8477071.jpeg"
-                alt="Čerstvé maso"
+                src="/images/hovezi-steaky-detail.jpg"
+                alt="Syrové hovězí steaky"
                 width={470}
                 height={520}
                 sizes="(max-width: 767px) 100vw, 550px"
@@ -81,7 +87,7 @@ export default function KontaktPage() {
       </section>
 
       <OrderCta
-        image="/images/pexels-photo-8477072.jpeg"
+        image="/images/reznik-drzi-hovezi-maso.jpg"
         text="Zajistěte si každodenní přísun čerstvého a kvalitního masa od profesionálů."
       />
     </>

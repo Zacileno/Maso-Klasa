@@ -1125,6 +1125,24 @@ h3 {
   text-align: center;
 }
 
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+  margin-bottom: 12px;
+  font-size: 16px;
+}
+
+.footer-nav a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.footer-nav a:hover {
+  color: var(--color-primary);
+}
+
 .footer-bottom p {
   margin: 0;
   color: var(--color-text);

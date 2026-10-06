@@ -108,7 +108,24 @@ Claude in Chrome (prohlížeč „LAPTOP-HG73JT8H"). Při dalším použití Chr
 5. ~~Kontrola Lenkou, pravopis, tablet, push na GitHub~~ ✅
 6. Vercel – řeší Lenka sama.
 7. ~~Fáze 2: administrace Akcí (Sanity)~~ ✅
-8. Až bude známá ostrá doména: přidat ji do CORS v Sanity (viz sekce 3) a ověřit přihlášení na `/admin`.
+8. Až bude známá ostrá doména: přidat ji do CORS v Sanity (viz sekce 3) a ověřit přihlášení na `/admin`;
+   nastavit `SITE_URL` (viz SEO níže), pokud by se Vercel doména lišila od hlavní.
+9. Po nasazení SEO ověřit: validator.schema.org + Google Rich Results Test, Facebook Sharing Debugger,
+   vložit sitemapu do Search Console.
+
+**SEO (2026-10-06, skill seo-checklist-zaklad):**
+- `src/data/seo.ts` – `SITE_URL` (env `SITE_URL` → jinak automaticky `VERCEL_PROJECT_PRODUCTION_URL` → jinak localhost),
+  `pageMetadata()` = title, description, canonical, Open Graph, Twitter cards pro každou stránku; `SHARE_IMAGE`.
+- Title a description změřené (title 55–57 znaků, description 150–156 znaků), každá stránka vlastní.
+- `src/app/robots.ts` (zakazuje `/admin`, `/api/`), `src/app/sitemap.ts` (3 stránky, lastmod = datum nasazení).
+- OG obrázek `public/images/maso-klasa-sdileni.jpg` 1200×630 (hero fotka + bílé logo + „Dodavatel čerstvého masa v Praze").
+  Pozn.: file-based `opengraph-image.jpg` v `(site)` se na podstránkách ztrácel (shallow merge) → proto obrázek v `public`.
+- Favicon: `src/app/icon.svg` (od Lenky, „Group 5.svg"), `icon.png` zmenšen na 512 px (záloha), `apple-icon.png` 180 px.
+- JSON-LD (`src/components/JsonLd.tsx`): homepage Organization + LocalBusiness + WebSite, podstránky BreadcrumbList.
+  Údaje ověřeny v ARESu: právní název „maso – uzeniny Gaube Miloslav s.r.o.", Lovosická 778/2, Praha 9, DIČ CZ02141990.
+  Otevírací doba neuvedena (na webu není). Bez SearchAction (web nemá vyhledávání).
+- Obrázky přejmenovány popisně (`syrove-hovezi-s-rozmarynem.jpg`, `rozvoz-masa-dodavka.jpg`…), alt texty zpřesněny.
+- Patička: nový řádek odkazů (Domů, Akce, Nabídka, Certifikace, Kariéra, Kontakt).
 
 **Tipy pro testování:** dev server `npm run dev` (port 3000). Chrome okno nejde zmenšit (maximalizované) →
 mobil se testoval přes `<iframe>` šířky 390 px vložený do stránky. Pozor: při úpravě kódu HMR takovou

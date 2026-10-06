@@ -2,11 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import PhotoSection from "@/components/PhotoSection";
 import SectionIntro from "@/components/SectionIntro";
+import { pageMetadata } from "@/data/seo";
 import { ORDER_MAILTO } from "@/data/site";
+import JsonLd, { breadcrumbJsonLd } from "@/components/JsonLd";
 
-export const metadata: Metadata = {
-  title: "Kariéra",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Práce řezník a řidič v Praze, nástup ihned – Maso Klasa",
+  description:
+    "Hledáme řezníka (36 000 Kč čistého) a řidiče sk. B (32 000 Kč čistého) do firmy Maso Klasa v Praze 9. Jídlo zdarma, HPP, DPP i brigáda, nástup možný ihned.",
+  path: "/kariera",
+});
 
 type Job = {
   title: string;
@@ -36,8 +41,8 @@ const jobs: Job[] = [
       "– nástup možný IHNED",
     ],
     image: {
-      src: "/images/pexels-photo-15378096-15378096.jpg",
-      alt: "Řezník",
+      src: "/images/reznik-s-nozem.jpg",
+      alt: "Řezník s nožem při práci",
     },
     photoFirst: false,
   },
@@ -56,7 +61,7 @@ const jobs: Job[] = [
       "– HPP, DPP, OSVČ nebo brigáda",
       "– nástup možný IHNED",
     ],
-    image: { src: "/images/Untitled-design-21.jpg", alt: "Rozvoz masa" },
+    image: { src: "/images/rozvoz-masa-dodavka.jpg", alt: "Nakládání zásilek masa do dodávky" },
     photoFirst: true,
   },
   {
@@ -66,7 +71,7 @@ const jobs: Job[] = [
       "– ohodnocení 1 500 Kč čistého",
       "– výplata po každém dni",
     ],
-    image: { src: "/images/Untitled-design-21.jpg", alt: "Rozvoz masa" },
+    image: { src: "/images/rozvoz-masa-dodavka.jpg", alt: "Nakládání zásilek masa do dodávky" },
     photoFirst: false,
   },
 ];
@@ -83,8 +88,9 @@ function Lines({ lines }: { lines: string[] }) {
 export default function KarieraPage() {
   return (
     <>
+      <JsonLd data={breadcrumbJsonLd("Kariéra", "/kariera")} />
       <PhotoSection
-        image="/images/pexels-photo-13068566-13068566.jpg"
+        image="/images/uzene-hovezi-maso.jpg"
         className="hero hero--sub"
         priority
       >

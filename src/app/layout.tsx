@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Josefin_Sans, Lato, Playfair_Display } from "next/font/google";
+import { SITE_NAME, SITE_URL } from "@/data/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -20,13 +21,11 @@ const josefin = Josefin_Sans({
   weight: ["400", "500", "600"],
 });
 
+// Page titles and descriptions are set per page via pageMetadata() in src/data/seo.ts.
 export const metadata: Metadata = {
-  title: {
-    default: "Maso Klasa – Dodavatel čerstvého masa v Praze",
-    template: "%s – Maso Klasa",
-  },
-  description:
-    "Zásobujeme restaurace, školy i další podniky po celé Praze čerstvým masem – už téměř 30 let.",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  applicationName: SITE_NAME,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
