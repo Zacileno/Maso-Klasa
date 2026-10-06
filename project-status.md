@@ -13,7 +13,7 @@ shodný design, struktura i prokliky na podstránky (Kariéra, Kontakt).
 **Výjimky / změny oproti originálu:**
 - Odstranit tlačítko „Zobrazit kompletní nabídku" (na originále vede na `#`, tedy nikam).
 - Všude nasadit nová loga „MASO KLASA" (složka `Loga/`).
-- SEO zatím neřešit.
+- SEO původně neřešit → 2026-10-06 doplněn SEO základ na pokyn Lenky (viz sekce 4 „SEO").
 
 **Tech stack:**
 - Frontend: Next.js (App Router, TypeScript strict, Tailwind CSS)
@@ -44,12 +44,19 @@ shodný design, struktura i prokliky na podstránky (Kariéra, Kontakt).
 - [ ] CORS v Sanity pro ostrou doménu (až bude známá)
 - ~~Administrace sekce „Nabídka"~~ – zrušeno, Nabídka zůstává v kódu (`src/data/nabidka.ts`)
 
+### Fáze 3 – SEO základ
+- [x] Všech 13 bodů checklistu (robots, sitemap, title, description, canonical, OG, Twitter, OG obrázek,
+      favicon, obrázky, názvy a alty, prolinkování, JSON-LD) – commit `ceb1c8a`
+- [ ] Doplnit ostrou doménu (`SITE_URL`)
+- [ ] Po nasazení: Rich Results Test, validator.schema.org, Facebook Sharing Debugger, sitemapa do Search Console
+
 ---
 
 ## 3. Aktuální stav
 
-**Fáze:** 2 – administrace Akcí přes Sanity hotová a otestovaná. Fáze 1 (web 1:1, 3 stránky) hotová, na GitHubu
-(`origin` = Zacileno/Maso-Klasa, větev `main`). Vercel řeší Lenka sama (pokyn: „Vercelem se vůbec nezaobírej").
+**Fáze:** 3 – SEO základ hotový a na GitHubu (`ceb1c8a`). Fáze 1 (web 1:1, 3 stránky) a fáze 2 (administrace Akcí
+v Sanity, `4877a42`) hotové. Vše na GitHubu (`origin` = Zacileno/Maso-Klasa, větev `main`), pracovní složka čistá.
+Vercel řeší Lenka sama (pokyn: „Vercelem se vůbec nezaobírej"). **Čeká se na ostrou doménu** od Lenky.
 Git autor v tomto repu (lokální config): Lenka Štěpánková <l.stepankova.18@seznam.cz>.
 `next.config.ts`: `allowedDevOrigins: ["192.168.*.*"]` – bez toho Next 16 v dev režimu blokuje skripty pro telefon
 přes síťovou IP (stránka se na mobilu „nenačte"). Týká se jen `npm run dev`.
@@ -57,7 +64,10 @@ Next 16.3.8, React 19.2, Tailwind 4 (jen import; styly jsou v `src/app/globals.c
 přesným breakpointům originálu 976/767 a 921/544 px), TS strict, `src/`. Lint + typecheck OK.
 
 **Struktura kódu:**
-- `src/app/layout.tsx` – kořenový layout: fonty (`next/font`: Playfair Display, Lato, Josefin Sans, latin-ext), lang=cs
+- `src/app/layout.tsx` – kořenový layout: fonty (`next/font`: Playfair Display, Lato, Josefin Sans, latin-ext), lang=cs,
+  `metadataBase` = `SITE_URL`
+- `src/app/robots.ts`, `src/app/sitemap.ts`, `src/app/icon.svg` + `icon.png` + `apple-icon.png` – SEO a ikony (viz SEO níže)
+- `src/data/seo.ts` – `SITE_URL`, `pageMetadata()`, `SHARE_IMAGE`; `src/components/JsonLd.tsx` – strukturovaná data
 - `src/app/(site)/` – skupina stránek webu (adresy se nemění): `layout.tsx` (Header, Footer, ScrollToTop),
   `page.tsx` (homepage), `kariera/page.tsx`, `kontakt/page.tsx`
 - `src/app/admin/[[...tool]]/page.tsx` – Sanity Studio přes celou obrazovku (bez hlavičky/patičky webu), `noindex`
@@ -68,7 +78,7 @@ přesným breakpointům originálu 976/767 a 921/544 px), TS strict, `src/`. Lin
   (veřejné hodnoty → v kódu, ne v `.env`; žádný tajný token se nepoužívá)
 - `src/sanity/schemaTypes/akce.ts` – schéma: pole `items[]` s `name` + `price` (text vč. jednotky, např. „179,90 Kč/kg")
 - `src/sanity/client.ts` – `getAkceItems()`; homepage má `revalidate = 60` → změna se na webu projeví do 1 minuty
-- `src/components/` – Header (client, mobilní menu), Footer, ScrollToTop, Carousel (certifikáty), PhotoSection
+- `src/components/` – Header (client, mobilní menu), Footer (+ řádek odkazů `.footer-nav`), ScrollToTop, Carousel (certifikáty), PhotoSection
   (fotka + overlay 0.7), OrderCta („Objednejte si u nás"), SectionIntro (nadtitulek + nadpis + text), icons
 - `src/data/` – `site.ts` (kontakty, menu, e-mail), `akce.ts` (jen typ `AkceItem`, data jsou v Sanity), `nabidka.ts`
 
@@ -108,9 +118,10 @@ Claude in Chrome (prohlížeč „LAPTOP-HG73JT8H"). Při dalším použití Chr
 5. ~~Kontrola Lenkou, pravopis, tablet, push na GitHub~~ ✅
 6. Vercel – řeší Lenka sama.
 7. ~~Fáze 2: administrace Akcí (Sanity)~~ ✅
-8. Až bude známá ostrá doména: přidat ji do CORS v Sanity (viz sekce 3) a ověřit přihlášení na `/admin`;
-   nastavit `SITE_URL` (viz SEO níže), pokud by se Vercel doména lišila od hlavní.
-9. Po nasazení SEO ověřit: validator.schema.org + Google Rich Results Test, Facebook Sharing Debugger,
+8. ~~SEO základ~~ ✅ (`ceb1c8a`)
+9. **Čeká na Lenku – ostrá doména.** Pak: přidat ji do CORS v Sanity (viz sekce 3), ověřit přihlášení na `/admin`
+   a nastavit `SITE_URL` (viz SEO níže), pokud by se Vercel doména lišila od hlavní.
+10. Po nasazení SEO ověřit: validator.schema.org + Google Rich Results Test, Facebook Sharing Debugger,
    vložit sitemapu do Search Console.
 
 **SEO (2026-10-06, skill seo-checklist-zaklad):**
@@ -127,7 +138,8 @@ Claude in Chrome (prohlížeč „LAPTOP-HG73JT8H"). Při dalším použití Chr
 - Obrázky přejmenovány popisně (`syrove-hovezi-s-rozmarynem.jpg`, `rozvoz-masa-dodavka.jpg`…), alt texty zpřesněny.
 - Patička: nový řádek odkazů (Domů, Akce, Nabídka, Certifikace, Kariéra, Kontakt).
 
-**Tipy pro testování:** dev server `npm run dev` (port 3000). Chrome okno nejde zmenšit (maximalizované) →
+**Tipy pro testování:** dev server `npm run dev` (port 3000). Pozor: Claude Code ho při nedostatku paměti sám
+vypíná (stalo se 2× 2026-10-05/06) → znovu spustit jen na požádání Lenky. Chrome okno nejde zmenšit (maximalizované) →
 mobil se testoval přes `<iframe>` šířky 390 px vložený do stránky. Pozor: při úpravě kódu HMR takovou
 „hacknutou" stránku rozbije (chyby removeChild v logu jsou jen z toho, ne z webu).
 
@@ -189,6 +201,13 @@ Pozn.: originální logo v headeru je jen malé prasátko; nové je široké (pr
   - kariéra: `pexels-photo-15378096-15378096.jpg` (řezník), `Untitled-design-21.jpg` (řidič, brigáda)
   - certifikáty (slider): `dokumenty-MASO-pdf.jpg`, `-pdf-1.jpg`, `-pdf-2.jpg`
   - `klasa-svg.svg` = staré logo, NEPOUŽÍVAT
+  - **Pozn. (2026-10-06):** v `public/images/` jsou obrázky kvůli SEO přejmenované – `pexels-photo-65175` →
+    `syrove-hovezi-s-rozmarynem`, `8792899` → `krajeni-masa-nozem`, `8477071` → `hovezi-steaky-detail`,
+    `4015401` → `hovezi-steak-na-taliri`, `8477072` → `reznik-drzi-hovezi-maso`, `13068566` → `uzene-hovezi-maso`,
+    `15378096` → `reznik-s-nozem`, `Untitled-design-21` → `rozvoz-masa-dodavka`, `dokumenty-MASO-pdf(-1/-2)` →
+    `certifikat-maso-klasa-1/2/3`, ikony `Untitled-design-6/5/4/6.svg` → `ikona-cerstve-maso/rychle-dodani/spolehlivost/historie.svg`.
+    Nově `maso-klasa-sdileni.jpg` (OG obrázek). Složka `_original/` má stále původní názvy.
+- **Favicon (2026-10-06):** SVG od Lenky (`Group 5.svg` → `src/app/icon.svg`, hnědé kulaté logo, `#580606`).
 - `_original/pages/` – vyrenderované HTML: `home.html`, `kariera.html`, `kontakt.html`
 - `_original/css/` – styly (Astra `main.min.css`, Spectra `uag-css-30/31/33.css` = styly bloků homepage/kariéra/kontakt,
   obsahují i mobilní/tabletové media queries)
@@ -231,6 +250,8 @@ Kariéra = střídání text/fotka (cik-cak).
 
 **Footer:** 4 sloupce (Sídlo firmy / Provoz / Obchodní ředitel / Obchodní zástupci), nadpisy Lato bold,
 telefony a e-mail červeně podtržené, dole linka + „Autorská práva © {rok}" na střed.
+Nad copyrightem nově (SEO, není na originále) řádek odkazů Domů · Akce · Nabídka · Certifikace · Kariéra · Kontakt
+(16 px, světle šedé, hover červená).
 
 ---
 
@@ -248,6 +269,11 @@ telefony a e-mail červeně podtržené, dole linka + „Autorská práva © {ro
 - 2026-10-05: Editovat se bude **jen sekce Akce** (Nabídka zůstává v kódu). Admin na `/admin` na stejném webu.
 - 2026-10-05: Vercel řeší Lenka sama – Claude se jím nezabývá.
 - 2026-10-05: Účet Sanity si Lenka založila sama přes GitHub (zakládání účtů / OAuth Claude dělat nesmí).
+- 2026-10-06: SEO základ podle skillu `seo-checklist-zaklad` – Lenka: „udělej všechny úpravy".
+- 2026-10-06: Doména zatím neznámá („potom ti ji upřesním") → `SITE_URL` bere doménu z Vercelu, ručně přepsatelné
+  proměnnou prostředí `SITE_URL`. Nehádat doménu.
+- 2026-10-06: Ve strukturovaných datech jen ověřené údaje (ARES); bez otevírací doby, bez `foundingDate`
+  (firma „od 1997", ale s.r.o. vznikla 2013 → raději neuvádět).
 
 ## 9. Log práce
 - 2026-10-05: Analýza textů a struktury originálu (3 stránky), vytvořen tento soubor. Kód zatím žádný.
@@ -265,4 +291,8 @@ telefony a e-mail červeně podtržené, dole linka + „Autorská práva © {ro
   `sanity init --bare --project-name "Maso Klasa" --organization oXwPfANg9 --dataset production`), protože klikání
   na sanity.io/manage blokovalo jiné rozšíření Chromu. Nainstalováno `next-sanity`, `sanity`, `styled-components`,
   `@sanity/locale-cs-cz`. Stránky přesunuty do `src/app/(site)/`, Studio na `/admin`. Do Sanity importováno
-  6 současných akcí. CORS pro localhost:3000. Lenka otestovala úpravu Akcí – funguje.
+  6 současných akcí. CORS pro localhost:3000. Lenka otestovala úpravu Akcí – funguje. Commit + push `4877a42`.
+- 2026-10-06: SEO audit (0 z 13 bodů splněno, 3 částečně) → doplněno vše: meta tagy, canonical, OG + Twitter,
+  OG obrázek (vyroben ze hero fotky + loga přes sharp), favicon SVG + PNG 512 + apple-icon 180, robots, sitemap,
+  JSON-LD (ARES ověřen), přejmenování obrázků, alt texty, odkazy v patičce. Ověřeno curl na všech 3 stránkách,
+  build OK. Commit + push `ceb1c8a`. Dev server 2× vypnut Claude Code kvůli nedostatku paměti (ne chyba webu).
